@@ -1,27 +1,30 @@
 body {
   background: linear-gradient(10deg, rgb(109, 1, 1), black);
-  margin: 20px 650px;
-}
-
-.card {
-  background: #191c29;
-  width: 550px;
-  height: 850px;
-  padding: 20px;
-  border-radius: 10px;
-  background: linear-gradient(10deg, rgb(90, 1, 1), rgb(0, 0, 0));
-  position: relative;
+  display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
+}
+
+
+.card {
+  position: relative;
+  width: 400px;
+  height: 700px;
+  border-radius: 10px;
+  padding: 20px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 1.5rem;
   font-family: cursive;
-  background-image: url('https://i.pinimg.com/736x/cd/2e/59/cd2e593b9acdd70e76f3d2e56f15ceb0.jpg');
+  cursor: pointer;
+
+  background: 
+    url('https://i.pinimg.com/1200x/d3/e2/32/d3e232d1726d70916ffa764af95f5675.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  cursor: pointer;
-  
   transition: 0.4s ease-in-out;
 }
 
@@ -29,23 +32,28 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  padding: 7px; 
+  padding: 3px;
   border-radius: 10px;
   background: linear-gradient(10deg, black, rgb(168, 2, 2));
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
-          mask-composite: exclude; 
+          mask-composite: exclude;
+
   pointer-events: none;
 }
 
 .card:hover {
-  background-image: url('https://i.pinimg.com/736x/54/aa/33/54aa3326b7397ff0239cf44cc688194c.jpg');
-  border: none;
-  box-shadow: 0 0 40px #d60101,
-              0 0 60px #191c29;
-  
+  background: 
+    url('https://i.pinimg.com/1200x/7c/a1/33/7ca13305cd7ccfa14d81c4a807a7ee83.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
+  box-shadow: 
+    0 0 40px #d60101,
+    0 0 60px #191c29;
+
+  transform: perspective(1000px) rotateY(180deg);
 }
-

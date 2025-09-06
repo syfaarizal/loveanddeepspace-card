@@ -3,10 +3,683 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Sylus Card</title>
+    <title>Interactive Character Cards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(45deg, rgb(109, 1, 1), rgb(20, 20, 20), black, rgb(25, 25, 70));
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card-container {
+            perspective: 1200px;
+            position: relative;
+        }
+
+        .card {
+            position: relative;
+            width: 320px;
+            height: 500px;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            font-family: 'Georgia', serif;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-blend-mode: overlay;
+            margin: 10px;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            padding: 3px;
+            border-radius: 15px;
+            background-size: 200% 200%;
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { background-position: 0% 50%; opacity: 0.8; }
+            50% { background-position: 100% 50%; opacity: 1; }
+        }
+
+        /* Sylus Card - Red Theme */
+        .card.sylus {
+            background: 
+                linear-gradient(135deg, rgba(0,0,0,0.3), rgba(168,2,2,0.1)),
+                url('https://i.pinimg.com/736x/cd/2e/59/cd2e593b9acdd70e76f3d2e56f15ceb0.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card.sylus::before {
+            background: linear-gradient(45deg, 
+                rgba(168, 2, 2, 0.8), 
+                rgba(255, 255, 255, 0.1), 
+                rgba(168, 2, 2, 0.8));
+        }
+
+        .card.sylus:hover {
+            background: 
+                linear-gradient(135deg, rgba(0,0,0,0.2), rgba(168,2,2,0.2)),
+                url('https://i.pinimg.com/736x/82/6c/d9/826cd9a26a6122351201610d7499e075.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 
+                0 0 60px rgba(214, 1, 1, 0.8),
+                0 0 100px rgba(25, 28, 41, 0.6);
+        }
+
+        /* Xavier Card - Light Blue Theme */
+        .card.xavier {
+            background: 
+                linear-gradient(135deg, rgba(0,0,0,0.3), rgba(100,150,255,0.1)),
+                url('https://i.pinimg.com/736x/42/a2/ae/42a2ae77e558e211eb029041578c625f.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card.xavier::before {
+            background: linear-gradient(45deg, 
+                rgba(100, 150, 255, 0.8), 
+                rgba(255, 255, 255, 0.2), 
+                rgba(100, 150, 255, 0.8));
+        }
+
+        .card.xavier:hover {
+            background: 
+                linear-gradient(135deg, rgba(0,0,0,0.2), rgba(100,150,255,0.2)),
+                url('https://i.pinimg.com/736x/2b/09/a5/2b09a522203a82f22ea187944793616e.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 
+                0 0 60px rgba(100, 150, 255, 0.8),
+                0 0 100px rgba(25, 40, 80, 0.6);
+        }
+
+        /* Rafayel Card - Purple Theme */
+        .card.rafayel {
+            background: 
+                linear-gradient(135deg, rgba(0,0,0,0.3), rgba(150,50,200,0.1)),
+                url('https://i.pinimg.com/736x/5a/27/3a/5a273a3472662bb24a517fe824bcae92.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card.rafayel::before {
+            background: linear-gradient(45deg, 
+                rgba(150, 50, 200, 0.8), 
+                rgba(255, 200, 255, 0.2), 
+                rgba(150, 50, 200, 0.8));
+        }
+
+        .card.rafayel:hover {
+            background: 
+                linear-gradient(135deg, rgba(0,0,0,0.2), rgba(150,50,200,0.2)),
+                url('https://i.pinimg.com/736x/25/01/73/250173a1c2eb4539165638b74b670d72.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 
+                0 0 60px rgba(150, 50, 200, 0.8),
+                0 0 100px rgba(50, 20, 70, 0.6);
+        }
+
+        /* Zayne Card - Teal Theme */
+        .card.zayne {
+            background: 
+                linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,150,150,0.1)),
+                url('https://i.pinimg.com/736x/4c/cb/4c/4ccb4c7df9f991ac3be799ff830ef269.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card.zayne::before {
+            background: linear-gradient(45deg, 
+                rgba(0, 150, 150, 0.8), 
+                rgba(200, 255, 255, 0.2), 
+                rgba(0, 150, 150, 0.8));
+        }
+
+        .card.zayne:hover {
+            background: 
+                linear-gradient(135deg, rgba(0,0,0,0.2), rgba(0,150,150,0.2)),
+                url('https://i.pinimg.com/1200x/84/16/a2/8416a2ce86c5d1ad298f452e7fc9ec91.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 
+                0 0 60px rgba(0, 150, 150, 0.8),
+                0 0 100px rgba(20, 50, 50, 0.6);
+        }
+
+        /* Caleb Card - Orange Theme */
+        .card.caleb {
+            background: 
+                linear-gradient(135deg, rgba(0,0,0,0.3), rgba(255,120,50,0.1)),
+                url('https://i.pinimg.com/736x/af/d7/63/afd76353a1263aac598d0daa61ab2377.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card.caleb::before {
+            background: linear-gradient(45deg, 
+                rgba(255, 120, 50, 0.8), 
+                rgba(255, 220, 180, 0.2), 
+                rgba(255, 120, 50, 0.8));
+        }
+
+        .card.caleb:hover {
+            background: 
+                linear-gradient(135deg, rgba(0,0,0,0.2), rgba(255,120,50,0.2)),
+                url('https://i.pinimg.com/736x/59/ba/1b/59ba1b947aa4a3bf44c6c3221c3a65a4.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 
+                0 0 60px rgba(255, 120, 50, 0.8),
+                0 0 100px rgba(80, 40, 20, 0.6);
+        }
+
+        .card:hover {
+            transform: 
+                perspective(1200px) 
+                rotateY(10deg) 
+                rotateX(5deg) 
+                scale(1.05) 
+                translateZ(20px);
+        }
+
+        .card:active {
+            transform: 
+                perspective(1200px) 
+                rotateY(15deg) 
+                rotateX(10deg) 
+                scale(0.98) 
+                translateZ(10px);
+        }
+
+        .card-content {
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+            z-index: 2;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        .card-subtitle {
+            font-size: 1rem;
+            font-style: italic;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1s forwards;
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.5s forwards;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 2s forwards;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: float 8s linear infinite;
+        }
+
+        .particle.red { background: radial-gradient(circle, rgba(214, 1, 1, 0.8), transparent); }
+        .particle.blue { background: radial-gradient(circle, rgba(100, 150, 255, 0.8), transparent); }
+        .particle.purple { background: radial-gradient(circle, rgba(150, 50, 200, 0.8), transparent); }
+        .particle.teal { background: radial-gradient(circle, rgba(0, 150, 150, 0.8), transparent); }
+        .particle.orange { background: radial-gradient(circle, rgba(255, 120, 50, 0.8), transparent); }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .card {
+                width: 280px;
+                height: 450px;
+                margin: 5px;
+            }
+            
+            .card-title {
+                font-size: 1.6rem;
+            }
+            
+            .card-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .card-description {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: 250px;
+                height: 400px;
+            }
+        }
+
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            max-width: 1800px;
+            margin: 0;
+        }
+
+        .interactive-hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            animation: pulse 2s ease-in-out infinite;
+            text-align: center;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+    </style>
 </head>
 <body>
-    <divc class="card"></divc>
+    <div class="floating-particles" id="particles"></div>
+
+    <div class="cards-container">
+        <!-- Sylus Card -->
+        <div class="card-container">
+            <div class="card sylus" data-character="sylus">
+                <div class="card-content">
+                    <div>
+                        <h1 class="card-title">Sylus</h1>
+                        <p class="card-subtitle">Onychinus Leader</p>
+                    </div>
+                    <div class="card-description">
+                        A mysterious figure shrouded in darkness and power. Known for his strategic mind and unwavering determination.
+                    </div>
+                    <div class="card-stats">
+                        <div class="stat">
+                            <div class="stat-value">★★★★★</div>
+                            <div class="stat-label">Power</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">★★★★☆</div>
+                            <div class="stat-label">Mystery</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Xavier Card -->
+        <div class="card-container">
+            <div class="card xavier" data-character="xavier">
+                <div class="card-content">
+                    <div>
+                        <h1 class="card-title">Xavier</h1>
+                        <p class="card-subtitle">Deepspace Hunter</p>
+                    </div>
+                    <div class="card-description">
+                        A skilled hunter with a gentle soul. His light-based abilities illuminate even the darkest corners of space.
+                    </div>
+                    <div class="card-stats">
+                        <div class="stat">
+                            <div class="stat-value">★★★★☆</div>
+                            <div class="stat-label">Light</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">★★★★★</div>
+                            <div class="stat-label">Kindness</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rafayel Card -->
+        <div class="card-container">
+            <div class="card rafayel" data-character="rafayel">
+                <div class="card-content">
+                    <div>
+                        <h1 class="card-title">Rafayel</h1>
+                        <p class="card-subtitle">Lemurian Artist</p>
+                    </div>
+                    <div class="card-description">
+                        A talented artist with ocean depths in his eyes. His creativity flows like the tides of his homeland.
+                    </div>
+                    <div class="card-stats">
+                        <div class="stat">
+                            <div class="stat-value">★★★★★</div>
+                            <div class="stat-label">Art</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">★★★☆☆</div>
+                            <div class="stat-label">Ocean</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zayne Card -->
+        <div class="card-container">
+            <div class="card zayne" data-character="zayne">
+                <div class="card-content">
+                    <div>
+                        <h1 class="card-title">Zayne</h1>
+                        <p class="card-subtitle">Cardiac Surgeon</p>
+                    </div>
+                    <div class="card-description">
+                        A brilliant surgeon with ice-cold precision. His healing hands can mend both hearts and souls.
+                    </div>
+                    <div class="card-stats">
+                        <div class="stat">
+                            <div class="stat-value">★★★★★</div>
+                            <div class="stat-label">Medicine</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">★★★★☆</div>
+                            <div class="stat-label">Ice</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Caleb Card -->
+        <div class="card-container">
+            <div class="card caleb" data-character="caleb">
+                <div class="card-content">
+                    <div>
+                        <h1 class="card-title">Caleb</h1>
+                        <p class="card-subtitle">Childhood Friend</p>
+                    </div>
+                    <div class="card-description">
+                        A warm-hearted companion with a fiery spirit. His loyalty burns brighter than any flame.
+                    </div>
+                    <div class="card-stats">
+                        <div class="stat">
+                            <div class="stat-value">★★★★★</div>
+                            <div class="stat-label">Loyalty</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">★★★★☆</div>
+                            <div class="stat-label">Fire</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="interactive-hint">
+        Hover over cards to reveal their power • Click for special effects
+    </div>
+
+    <script>
+        const particleColors = ['red', 'blue', 'purple', 'teal', 'orange'];
+
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            const colorClass = particleColors[Math.floor(Math.random() * particleColors.length)];
+            particle.className = `particle ${colorClass}`;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 6 + 6) + 's';
+            particle.style.animationDelay = Math.random() * 3 + 's';
+            document.getElementById('particles').appendChild(particle);
+
+            // Remove particle after animation
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.remove();
+                }
+            }, 12000);
+        }
+
+        // Create particles continuously
+        setInterval(createParticle, 400);
+
+        // Enhanced card interactions
+        const cards = document.querySelectorAll('.card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.filter = 'brightness(1.1) contrast(1.1)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.filter = 'none';
+                card.style.transform = 'none';
+            });
+
+            // Mouse move effect for subtle 3D movement
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 30;
+                const rotateY = (centerX - x) / 30;
+                
+                card.style.transform = `
+                    perspective(1200px) 
+                    rotateX(${rotateX}deg) 
+                    rotateY(${rotateY}deg) 
+                    scale(1.05) 
+                    translateZ(20px)
+                `;
+            });
+
+            // Click effect
+            card.addEventListener('click', () => {
+                const character = card.dataset.character;
+                
+                // Create ripple effect
+                const ripple = document.createElement('div');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 1s linear;
+                    pointer-events: none;
+                    left: 50%;
+                    top: 50%;
+                    width: 100px;
+                    height: 100px;
+                    margin-left: -50px;
+                    margin-top: -50px;
+                `;
+
+                // Set ripple color based on character
+                const rippleColors = {
+                    sylus: 'rgba(214, 1, 1, 0.4)',
+                    xavier: 'rgba(100, 150, 255, 0.4)',
+                    rafayel: 'rgba(150, 50, 200, 0.4)',
+                    zayne: 'rgba(0, 150, 150, 0.4)',
+                    caleb: 'rgba(255, 120, 50, 0.4)'
+                };
+
+                ripple.style.background = rippleColors[character] || 'rgba(255, 255, 255, 0.3)';
+                
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes ripple {
+                        to {
+                            transform: scale(6);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                card.appendChild(ripple);
+                
+                // Card flip animation on click
+                card.style.transform = 'perspective(1200px) rotateY(180deg) scale(1.1)';
+                
+                setTimeout(() => {
+                    card.style.transform = 'none';
+                }, 400);
+                
+                setTimeout(() => {
+                    if (ripple.parentNode) ripple.remove();
+                    if (style.parentNode) style.remove();
+                }, 1000);
+            });
+        });
+
+        // Initial particles burst
+        for (let i = 0; i < 10; i++) {
+            setTimeout(() => createParticle(), i * 200);
+        }
+
+        // Stagger card animations
+        cards.forEach((card, index) => {
+            card.style.animationDelay = (index * 0.2) + 's';
+        });
+    </script>
 </body>
 </html>
