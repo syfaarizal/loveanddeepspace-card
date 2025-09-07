@@ -12,9 +12,9 @@
         }
 
         body {
-            background: linear-gradient(45deg, rgb(109, 1, 1), rgb(20, 20, 20), black, rgb(25, 25, 70));
-            background-size: 400% 400%;
-            animation: gradientShift 12s ease infinite;
+            background: linear-gradient(50deg, rgb(109, 1, 1), rgb(20, 20, 20), black, rgb(25, 25, 70), rgb(20, 20, 20), rgb(109, 1, 103), black, rgb(1, 96, 109), black, rgb(99, 45, 1));
+            background-size: 700% 700%;
+            animation: gradientShift 17s ease infinite;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -27,11 +27,11 @@
         }
 
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
+            0% { background-position: 0% 60%; }
             25% { background-position: 100% 0%; }
             50% { background-position: 100% 100%; }
             75% { background-position: 0% 100%; }
-            100% { background-position: 0% 50%; }
+            100% { background-position: 0% 60%; }
         }
 
         .card-container {
@@ -286,6 +286,12 @@
             align-items: center;
         }
 
+        .card-content:hover {
+            color: white;
+            text-shadow: 8px 8px 12px rgb(0, 0, 0);
+            transition: text-shadow 0.3s ease;
+        }
+
         .card-stats {
             display: flex;
             justify-content: space-around;
@@ -332,8 +338,8 @@
 
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             animation: float 8s linear infinite;
         }
@@ -577,7 +583,7 @@
         }
 
         // Create particles continuously
-        setInterval(createParticle, 400);
+        setInterval(createParticle, 500);
 
         // Enhanced card interactions
         const cards = document.querySelectorAll('.card');
