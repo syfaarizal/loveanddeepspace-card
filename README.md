@@ -44,7 +44,7 @@ interactive-character-cards/
 ```
 
 ## 💡 Ideas for Future Upgrades  
-- Add more characters dynamically from JSON 📜  
+- Add more characters dynamically from JSON  
 - Dark / Light mode 🌙☀️  
 - Background music & sound effects 🎶  
 
